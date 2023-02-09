@@ -1,0 +1,34 @@
+Das Unternehmen möchte international expandieren. Hier stellt sich die Frage, ob das Unternehmen neue eigene Ländergesellschaften gründet oder ob hierbei bestehende Unternehmen aufgekauft werden. 
+Je nachdem muss auf einer bestehenden Infratsruktur aufgbaut werden oder man kann die Infrastruktur nach seinen Wünschen an die Infrastruktur der bestehenden Ländergesellschaft anpassen.
+
+Um die Resonanz der Marketingkampagnen und die Interaktion des Landeswebseite zu Speichern bietet sich eine dokumentebasierte Datenbank an, welche zu einer gewissen Kundenkennung gewisse Parameter speichert.
+Dies kann je nach Interaktion durch den Kunden varieren. Bei einer eher geringen Datenmenge wie es in dem Fallbeispiel der Fall ist bietet sich für das Tracken der Nutzerinteraktion der Kunden ein Apache Kafka Installation an,
+mit Hilfe von Kafka Producern. Solange das Hosting der Webseiten von einem zentralen Standort erfolgt bietet sich für das Speichern der Daten ein Apache Cluster an, da hier Nachricvhten mit einem Zeitstempel gespeichert werden.
+Im Zuge dessen würde ich für die Verarbeitung der Daten auch bei Apache Kafka bleiben.
+
+Apache Kafka ermöglicht es auch alten Datensilos aufzubrechen, sodass die alten Daten aus den Legacy Sytemen mit den neuen Daten verbunden werden können, innerhalb eines Data Lakes.
+
+Ab einer gewissen Größe und gewissen regulatorischen Bedingungen bezüglich Rechnungslegung und Buchhaltung bietet es sich an die Daten der verschiedenen Ländergesellschaften in einem Data Warehouse bereitzustellen.
+Hierfür wird für die Normalisierung und Zusammenführung der Daten ein ETL-Tool gebraucht (s.h. SAS, PowerCenter). Gerade für die Anwendung in einem Data Warehouse bietet sich eine relationale Datenbank an (Bsp. Oracle, Postgres).
+Das Backup der Datenbank kann mit Hilfe von Apache Airflow auf Dateisystemebene erfolgen. Hierbei könnte natürlich auch ein CronJob mit den gewissen Bash Commands eingesetzt werden.
+
+Gerade in Bezug auf die Datenhaltung sind hierbei die regulatorischen Bedingungen der Länder der entsprechenden Ausstelle zu beachten. Beispielsweise müssen die Daten Schweizer Finanzunternehmen auch in der Schweiz gespeichert werden.
+
+Ein Bottleneck kann die bestehende Netzwerkverbindung zwischen den Zentralstandort und einem der internationalen Standorten sein.
+
+
+1. Session-Daten 
+- Vorteil: Key-Value-Datenbanken erlauben eine schnelle LEse- und Schreibgeschwindigkeit. Hierbei kann besipielsweise der Key, dass Session-Datum und der Value die aufgerufenen Webseite darestellen.
+- Nachteil: Eingeschränkte Abfragemöglichkeiten, wenn hierbei nach einer aufgerufenen Webseite gesucht wird und das Session-Datum nicht vorhanden ist.
+2. Online-Shopping-Profil mit persönlichen Präferenzen 
+- Vorteil: Flexile Skalierbarkeit beim Hinzufügen von Prodilinformationen, sowie schenlle Schreibgeschwindigkeit neuer Prodilinformationen in den Key-abhängigen Valueblock
+- Nachteil: Bei Updates auf den Value-Block wird der komplette Value-Block geupdatet
+3. Cloud-Storage
+- Vorteile: Sind sehr gut skalierbar auch über Cluster hinweg über mehrere Nodes. Schnelle Schreib- und Lesezugriffe.
+- Nachteile: Eingeschränkte Abfragemöglichkeiten. Abfragen sind nur auf den Value einer Key-Value-Datenbank möglich. Fehlender Transaktionssupport
+4. Caching
+- Vorteile: Schnelle Schreib- und Lesezugriffe auf Daten möglich. Oft verwendete Daten sind dadurch schnell zugreifbar. Flexibilität in Bezug auf die Verwendung verschiedener Speichermedien oder die Anpassung der Caching-Strategie
+- Nachteile: 
+5.Content-Delivery-Networks
+- Vorteile: Key-Value-Datenbanken können hier verwendet werden, um verschiednesten Content wie Bilder, Videos und Audiofiles schnell und einfach auszuliefern.
+- Nachteile: Natürlich sind auch hier die Abfragemöglichkeiten begrenzt. 
